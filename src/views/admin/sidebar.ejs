@@ -1,0 +1,44 @@
+<aside class="admin-sidebar">
+
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="brand-icon brand-icon-sm me-2">
+      <i class="fas fa-terminal"></i>
+    </div>
+    <span class="fw-bold text-white">TechBlog</span>
+  </div>
+
+  <!-- Nav Links -->
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <a href="/admin" class="sidebar-link <%= typeof activePage !== 'undefined' && activePage === 'dashboard' ? 'active' : '' %>">
+      <i class="fas fa-gauge-high"></i>Dashboard
+    </a>
+    <a href="/admin/posts" class="sidebar-link <%= typeof activePage !== 'undefined' && activePage === 'posts' ? 'active' : '' %>">
+      <i class="fas fa-newspaper"></i>All Posts
+    </a>
+    <a href="/admin/posts/create" class="sidebar-link <%= typeof activePage !== 'undefined' && activePage === 'create' ? 'active' : '' %>">
+      <i class="fas fa-plus-circle"></i>New Post
+    </a>
+
+    <div class="sidebar-section-label mt-3">Site</div>
+    <a href="/" target="_blank" class="sidebar-link">
+      <i class="fas fa-globe"></i>View Blog
+    </a>
+    <a href="/auth/logout" class="sidebar-link sidebar-link-danger">
+      <i class="fas fa-right-from-bracket"></i>Logout
+    </a>
+  </nav>
+
+  <!-- User Info at bottom -->
+  <div class="sidebar-user">
+    <div class="author-avatar author-avatar-sm me-2">
+      <%= user.username.charAt(0).toUpperCase() %>
+    </div>
+    <div>
+      <div class="text-white small fw-medium"><%= user.username %></div>
+      <div class="text-muted" style="font-size:0.7rem"><%= user.role %></div>
+    </div>
+  </div>
+
+</aside>

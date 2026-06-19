@@ -1,0 +1,141 @@
+<%- include('../partials/head') %>
+
+<div class="admin-layout">
+
+  <!-- ─── Sidebar ──────────────────────────────────────────────────────── -->
+  <%- include('./sidebar') %>
+
+  <!-- ─── Main Content ─────────────────────────────────────────────────── -->
+  <main class="admin-main">
+
+    <!-- Top Bar -->
+    <div class="admin-topbar">
+      <div>
+        <h4 class="text-white fw-bold mb-0">Dashboard</h4>
+        <p class="text-muted small mb-0">Welcome back, <strong class="text-primary"><%= user.username %></strong></p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="/admin/posts/create" class="btn btn-primary btn-sm">
+          <i class="fas fa-plus me-1"></i>New Post
+        </a>
+        <a href="/" class="btn btn-outline-secondary btn-sm" target="_blank">
+          <i class="fas fa-arrow-up-right-from-square me-1"></i>View Blog
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- Flash Messages -->
+      <% if (success && success.length > 0) { %>
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4">
+          <i class="fas fa-circle-check"></i><span><%= success[0] %></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% } %>
+
+      <!-- ─── Stat Cards ─────────────────────────────────────────────── -->
+      <div class="row g-4 mb-5">
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card stat-card-blue">
+            <div class="stat-icon"><i class="fas fa-newspaper"></i></div>
+            <div>
+              <div class="stat-number"><%= stats.totalPosts %></div>
+              <div class="stat-label">Total Posts</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card stat-card-green">
+            <div class="stat-icon"><i class="fas fa-circle-check"></i></div>
+            <div>
+              <div class="stat-number"><%= stats.publishedPosts %></div>
+              <div class="stat-label">Published</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card stat-card-yellow">
+            <div class="stat-icon"><i class="fas fa-pen-to-square"></i></div>
+            <div>
+              <div class="stat-number"><%= stats.draftPosts %></div>
+              <div class="stat-label">Drafts</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card stat-card-purple">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div>
+              <div class="stat-number"><%= stats.totalUsers %></div>
+              <div class="stat-label">Users</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ─── Recent Posts Table ─────────────────────────────────────── -->
+      <div class="admin-card">
+        <div class="admin-card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 text-white fw-semibold">
+            <i class="fas fa-clock me-2 text-primary"></i>Recent Posts
+          </h5>
+          <a href="/admin/posts" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table admin-table mb-0">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (recentPosts.length === 0) { %>
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-4">No posts yet.</td>
+                </tr>
+              <% } %>
+              <% recentPosts.forEach(post => { %>
+                <tr>
+                  <td class="text-white fw-medium"><%= post.title %></td>
+                  <td><span class="category-badge-sm"><%= post.category %></span></td>
+                  <td>
+                    <% if (post.status === 'published') { %>
+                      <span class="status-badge status-published">
+                        <i class="fas fa-circle me-1" style="font-size:0.5rem"></i>Published
+                      </span>
+                    <% } else { %>
+                      <span class="status-badge status-draft">
+                        <i class="fas fa-circle me-1" style="font-size:0.5rem"></i>Draft
+                      </span>
+                    <% } %>
+                  </td>
+                  <td class="text-muted small">
+                    <%= new Date(post.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) %>
+                  </td>
+                  <td>
+                    <a href="/admin/posts/edit/<%= post.id %>" class="btn btn-xs btn-outline-primary me-1">
+                      <i class="fas fa-pen"></i>
+                    </a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,198 @@
+<%- include('../partials/head') %>
+
+<div class="admin-layout">
+  <%- include('./sidebar', { activePage: post ? 'posts' : 'create' }) %>
+
+  <main class="admin-main">
+
+    <div class="admin-topbar">
+      <div>
+        <h4 class="text-white fw-bold mb-0">
+          <%= post ? 'Edit Post' : 'Create New Post' %>
+        </h4>
+        <p class="text-muted small mb-0">
+          <%= post ? `Editing: ${post.title}` : 'Write a new article for the blog' %>
+        </p>
+      </div>
+      <a href="/admin/posts" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i>Back to Posts
+      </a>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- Flash Messages -->
+      <% if (error && error.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 mb-4">
+          <i class="fas fa-circle-xmark"></i><span><%= error[0] %></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% } %>
+
+      <!-- Form (action changes based on create vs edit) -->
+      <form action="<%= post ? `/admin/posts/edit/${post.id}` : '/admin/posts/create' %>" method="POST">
+
+        <div class="row g-4">
+
+          <!-- Left: Main Fields -->
+          <div class="col-lg-8">
+
+            <!-- Title -->
+            <div class="admin-card mb-4">
+              <div class="admin-card-header">
+                <h6 class="mb-0 text-white">Post Title</h6>
+              </div>
+              <div class="p-4">
+                <input
+                  type="text"
+                  class="form-control dark-input form-control-lg"
+                  name="title"
+                  id="titleInput"
+                  placeholder="Enter a compelling title..."
+                  value="<%= post ? post.title : '' %>"
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Excerpt -->
+            <div class="admin-card mb-4">
+              <div class="admin-card-header">
+                <h6 class="mb-0 text-white">Excerpt <span class="text-muted fw-normal small">(short summary for the listing page)</span></h6>
+              </div>
+              <div class="p-4">
+                <textarea
+                  class="form-control dark-input"
+                  name="excerpt"
+                  rows="2"
+                  placeholder="Write a brief summary (1-2 sentences)..."
+                ><%= post ? post.excerpt : '' %></textarea>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="admin-card">
+              <div class="admin-card-header d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 text-white">Content <span class="text-muted fw-normal small">(Markdown supported)</span></h6>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-xs btn-outline-secondary" onclick="switchTab('write')">Write</button>
+                  <button type="button" class="btn btn-xs btn-outline-secondary" onclick="switchTab('preview')">Preview</button>
+                </div>
+              </div>
+              <div class="p-4">
+                <!-- Write Tab -->
+                <div id="writeTab">
+                  <textarea
+                    class="form-control dark-input font-mono"
+                    name="content"
+                    id="contentTextarea"
+                    rows="20"
+                    placeholder="Write your post in Markdown...&#10;&#10;## Heading&#10;&#10;Regular paragraph text.&#10;&#10;```bash&#10;# code block&#10;echo Hello World&#10;```"
+                    required
+                  ><%= post ? post.content : '' %></textarea>
+                  <p class="text-muted small mt-2 mb-0">
+                    <i class="fab fa-markdown me-1"></i>
+                    Supports Markdown: **bold**, *italic*, `code`, ```code blocks```, ## headings, - lists
+                  </p>
+                </div>
+                <!-- Preview Tab -->
+                <div id="previewTab" class="d-none">
+                  <div class="post-content preview-box p-3" id="previewContent">
+                    <em class="text-muted">Click Preview to see the rendered output.</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Meta Fields -->
+          <div class="col-lg-4">
+
+            <!-- Publish Settings -->
+            <div class="admin-card mb-4">
+              <div class="admin-card-header">
+                <h6 class="mb-0 text-white">Publish Settings</h6>
+              </div>
+              <div class="p-4">
+                <label class="form-label text-secondary fw-medium">Status</label>
+                <select class="form-select dark-input mb-3" name="status">
+                  <option value="draft"     <%= (!post || post.status === 'draft')     ? 'selected' : '' %>>Draft</option>
+                  <option value="published" <%= (post && post.status === 'published')   ? 'selected' : '' %>>Published</option>
+                </select>
+                <button type="submit" class="btn btn-primary w-100 fw-semibold">
+                  <i class="fas fa-floppy-disk me-2"></i>
+                  <%= post ? 'Update Post' : 'Save Post' %>
+                </button>
+              </div>
+            </div>
+
+            <!-- Category -->
+            <div class="admin-card mb-4">
+              <div class="admin-card-header">
+                <h6 class="mb-0 text-white">Category</h6>
+              </div>
+              <div class="p-4">
+                <select class="form-select dark-input" name="category">
+                  <% const cats = ['DevOps','Docker','Kubernetes','Linux','Security','Cloud','General']; %>
+                  <% cats.forEach(c => { %>
+                    <option value="<%= c %>" <%= (post && post.category === c) ? 'selected' : '' %>><%= c %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <h6 class="mb-0 text-white">Tags</h6>
+              </div>
+              <div class="p-4">
+                <input
+                  type="text"
+                  class="form-control dark-input"
+                  name="tags"
+                  placeholder="docker, devops, cicd"
+                  value="<%= post ? post.tags : '' %>"
+                >
+                <p class="text-muted small mt-2 mb-0">Separate tags with commas</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Simple Markdown preview using the marked library (loaded via CDN)
+  function switchTab(tab) {
+    const writeTab   = document.getElementById('writeTab');
+    const previewTab = document.getElementById('previewTab');
+
+    if (tab === 'preview') {
+      const content = document.getElementById('contentTextarea').value;
+      // We use fetch to keep it simple. But for a true preview we need marked on the frontend.
+      // Here we just show the raw text in a preformatted block so beginners can understand.
+      document.getElementById('previewContent').innerHTML =
+        '<pre class="text-secondary" style="white-space:pre-wrap">' + escapeHtml(content) + '</pre>';
+      writeTab.classList.add('d-none');
+      previewTab.classList.remove('d-none');
+    } else {
+      writeTab.classList.remove('d-none');
+      previewTab.classList.add('d-none');
+    }
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+</script>
+
+<%- include('../partials/footer') %>

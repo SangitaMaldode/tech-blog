@@ -1,0 +1,142 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<!-- ─── Hero Section ────────────────────────────────────────────────────── -->
+<section class="hero-section text-center">
+  <div class="container">
+    <div class="hero-badge mb-3">
+      <i class="fas fa-bolt me-1"></i> DevOps &bull; Cloud &bull; Containers
+    </div>
+    <h1 class="hero-title">The Developer's <span class="text-gradient">TechBlog</span></h1>
+    <p class="hero-subtitle">
+      Practical articles on DevOps, Docker, Kubernetes and modern software engineering.
+    </p>
+
+    <!-- Quick Search -->
+    <form action="/" method="GET" class="hero-search mx-auto">
+      <div class="input-group">
+        <input class="form-control form-control-lg" type="search" name="search"
+               placeholder="Search articles..." value="<%= searchQuery %>">
+        <button class="btn btn-primary px-4" type="submit">
+          <i class="fas fa-search me-1"></i>Search
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ─── Main Content ─────────────────────────────────────────────────────── -->
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- Posts Column -->
+    <div class="col-lg-8">
+
+      <!-- Active filters -->
+      <% if (selectedCategory || searchQuery) { %>
+        <div class="d-flex align-items-center gap-2 mb-4 flex-wrap">
+          <span class="text-muted small">Showing results for:</span>
+          <% if (selectedCategory) { %>
+            <span class="filter-tag">
+              <i class="fas fa-tag me-1"></i><%= selectedCategory %>
+              <a href="/" class="ms-1 text-danger"><i class="fas fa-xmark"></i></a>
+            </span>
+          <% } %>
+          <% if (searchQuery) { %>
+            <span class="filter-tag">
+              <i class="fas fa-search me-1"></i>&ldquo;<%= searchQuery %>&rdquo;
+              <a href="/" class="ms-1 text-danger"><i class="fas fa-xmark"></i></a>
+            </span>
+          <% } %>
+        </div>
+      <% } %>
+
+      <!-- Post Cards -->
+      <% if (posts.length === 0) { %>
+        <div class="empty-state text-center py-5">
+          <i class="fas fa-file-circle-xmark text-muted mb-3" style="font-size:3rem"></i>
+          <h5 class="text-muted">No posts found</h5>
+          <p class="text-muted small">Try a different search term or category.</p>
+          <a href="/" class="btn btn-primary btn-sm mt-2">View All Posts</a>
+        </div>
+      <% } else { %>
+        <div class="row g-4">
+          <% posts.forEach(post => { %>
+            <div class="col-md-6">
+              <article class="blog-card h-100">
+                <div class="blog-card-body">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="category-badge"><%= post.category %></span>
+                  </div>
+                  <h2 class="blog-card-title">
+                    <a href="/post/<%= post.slug %>"><%= post.title %></a>
+                  </h2>
+                  <p class="blog-card-excerpt"><%= post.excerpt %></p>
+                </div>
+                <div class="blog-card-footer">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="author-avatar">
+                      <%= post.author_name.charAt(0).toUpperCase() %>
+                    </div>
+                    <div>
+                      <div class="text-white small fw-medium"><%= post.author_name %></div>
+                      <div class="text-muted" style="font-size:0.75rem">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        <%= new Date(post.created_at).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) %>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="/post/<%= post.slug %>" class="btn-read-more">
+                    Read <i class="fas fa-arrow-right ms-1"></i>
+                  </a>
+                </div>
+              </article>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+
+      <!-- Categories Widget -->
+      <div class="widget mb-4">
+        <h5 class="widget-title">
+          <i class="fas fa-layer-group me-2 text-primary"></i>Categories
+        </h5>
+        <ul class="list-unstyled mb-0">
+          <li>
+            <a href="/" class="category-link <%= !selectedCategory ? 'active' : '' %>">
+              <i class="fas fa-border-all me-2"></i>All Posts
+            </a>
+          </li>
+          <% categories.forEach(cat => { %>
+            <li>
+              <a href="/?category=<%= cat.category %>"
+                 class="category-link <%= selectedCategory === cat.category ? 'active' : '' %>">
+                <i class="fas fa-chevron-right me-2 text-primary small"></i><%= cat.category %>
+              </a>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Tags Cloud Widget -->
+      <div class="widget">
+        <h5 class="widget-title">
+          <i class="fas fa-tags me-2 text-primary"></i>Popular Tags
+        </h5>
+        <div class="d-flex flex-wrap gap-2">
+          <% const allTags = ['docker', 'kubernetes', 'devops', 'cicd', 'jenkins', 'containers', 'automation', 'nodejs']; %>
+          <% allTags.forEach(tag => { %>
+            <a href="/?search=<%= tag %>" class="tag-chip"><%= tag %></a>
+          <% }) %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

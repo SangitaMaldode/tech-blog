@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNav">
+  <div class="container">
+
+    <!-- Brand Logo -->
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+      <div class="brand-icon">
+        <i class="fas fa-terminal"></i>
+      </div>
+      TechBlog
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+
+      <!-- Left Links -->
+      <ul class="navbar-nav me-auto gap-1">
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="fas fa-home me-1 opacity-75"></i>Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/?category=DevOps">
+            <i class="fas fa-infinity me-1 opacity-75"></i>DevOps
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/?category=Docker">
+            <i class="fab fa-docker me-1 opacity-75"></i>Docker
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/?category=Kubernetes">
+            <i class="fas fa-dharmachakra me-1 opacity-75"></i>Kubernetes
+          </a>
+        </li>
+      </ul>
+
+      <!-- Search -->
+      <form class="d-flex me-3 search-form" action="/" method="GET">
+        <div class="input-group input-group-sm">
+          <input class="form-control search-input" type="search" name="search"
+                 placeholder="Search posts..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Auth Buttons -->
+      <% if (user) { %>
+        <div class="d-flex align-items-center gap-2">
+          <!-- Role badge -->
+          <% if (user.role === 'admin') { %>
+            <span class="role-badge role-admin d-none d-lg-inline-flex">
+              <i class="fas fa-shield-halved me-1"></i>Admin
+            </span>
+            <a href="/admin" class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-gauge me-1"></i>Dashboard
+            </a>
+          <% } else { %>
+            <span class="role-badge role-user d-none d-lg-inline-flex">
+              <i class="fas fa-user me-1"></i>Reader
+            </span>
+            <a href="/dashboard" class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-gauge me-1"></i>Dashboard
+            </a>
+          <% } %>
+          <a href="/auth/logout" class="btn btn-sm btn-danger">
+            <i class="fas fa-right-from-bracket me-1"></i>Logout
+          </a>
+        </div>
+      <% } else { %>
+        <a href="/auth/login" class="btn btn-sm btn-primary">
+          <i class="fas fa-right-to-bracket me-1"></i>Login
+        </a>
+      <% } %>
+
+    </div>
+  </div>
+</nav>

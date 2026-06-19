@@ -1,0 +1,140 @@
+<%- include('../partials/head') %>
+
+<div class="login-wrapper">
+  <div class="container">
+    <div class="row justify-content-center min-vh-100 align-items-center py-5">
+      <div class="col-sm-10 col-md-6 col-lg-4">
+
+        <!-- Back to blog -->
+        <div class="text-center mb-4">
+          <a href="/" class="text-decoration-none text-muted small">
+            <i class="fas fa-arrow-left me-1"></i>Back to Blog
+          </a>
+        </div>
+
+        <!-- Logo -->
+        <div class="text-center mb-4">
+          <div class="brand-icon brand-icon-lg mx-auto mb-3">
+            <i class="fas fa-terminal"></i>
+          </div>
+          <h2 class="fw-bold text-white mb-1">TechBlog</h2>
+          <p class="text-muted small">Admin Panel</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="card login-card">
+          <div class="card-body p-4 p-md-5">
+            <h4 class="text-white fw-bold text-center mb-4">Sign In</h4>
+
+            <!-- Flash: Error -->
+            <% if (error && error.length > 0) { %>
+              <div class="alert alert-danger d-flex align-items-center gap-2 py-2" role="alert">
+                <i class="fas fa-circle-xmark flex-shrink-0"></i>
+                <span><%= error[0] %></span>
+              </div>
+            <% } %>
+
+            <!-- Flash: Success -->
+            <% if (success && success.length > 0) { %>
+              <div class="alert alert-success d-flex align-items-center gap-2 py-2" role="alert">
+                <i class="fas fa-circle-check flex-shrink-0"></i>
+                <span><%= success[0] %></span>
+              </div>
+            <% } %>
+
+            <!-- Login Form -->
+            <form action="/auth/login" method="POST" novalidate>
+
+              <div class="mb-3">
+                <label for="username" class="form-label text-secondary fw-medium">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text dark-input-addon">
+                    <i class="fas fa-user text-muted"></i>
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control dark-input"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    required
+                    autofocus
+                    autocomplete="username"
+                  >
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="password" class="form-label text-secondary fw-medium">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text dark-input-addon">
+                    <i class="fas fa-lock text-muted"></i>
+                  </span>
+                  <input
+                    type="password"
+                    class="form-control dark-input"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                    autocomplete="current-password"
+                  >
+                  <button class="btn dark-input-addon" type="button" id="togglePassword" title="Show/hide password">
+                    <i class="fas fa-eye text-muted" id="eyeIcon"></i>
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                <i class="fas fa-right-to-bracket me-2"></i>Sign In
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Default credentials hint (remove in production) -->
+        <% if (process.env.NODE_ENV !== 'production') { %>
+          <div class="credentials-hint mt-3">
+            <p class="text-muted small fw-medium mb-2">
+              <i class="fas fa-circle-info me-1 text-primary"></i>Default accounts
+            </p>
+            <div class="d-flex flex-column gap-1">
+              <div class="cred-row">
+                <span class="role-badge role-admin me-2">
+                  <i class="fas fa-shield-halved me-1"></i>Admin
+                </span>
+                <code class="text-primary">admin</code>
+                <span class="text-muted mx-1">/</span>
+                <code class="text-primary">Admin@123</code>
+              </div>
+              <div class="cred-row">
+                <span class="role-badge role-user me-2">
+                  <i class="fas fa-user me-1"></i>User
+                </span>
+                <code class="text-primary">user</code>
+                <span class="text-muted mx-1">/</span>
+                <code class="text-primary">User@123</code>
+              </div>
+            </div>
+          </div>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle password visibility
+  document.getElementById('togglePassword').addEventListener('click', function () {
+    const input   = document.getElementById('password');
+    const icon    = document.getElementById('eyeIcon');
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    icon.classList.toggle('fa-eye',       !isHidden);
+    icon.classList.toggle('fa-eye-slash',  isHidden);
+  });
+</script>
+
+<%- include('../partials/footer') %>

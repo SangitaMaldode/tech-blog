@@ -1,0 +1,11 @@
+# Exclude files that should NOT be copied into the Docker image
+
+node_modules/
+npm-debug.log
+.env
+data/
+*.db
+.git/
+.gitignore
+README.md
+Jenkinsfile
