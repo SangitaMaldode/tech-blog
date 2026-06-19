@@ -1,0 +1,60 @@
+# ============================================================
+# TechBlog — Requirements
+# ============================================================
+# This file lists all system tools and Node.js packages
+# needed to run this project.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# SYSTEM REQUIREMENTS (install these on your machine first)
+# ------------------------------------------------------------
+
+Node.js       >= 18.0.0     https://nodejs.org
+npm           >= 9.0.0      Comes bundled with Node.js
+Git           >= 2.0.0      https://git-scm.com
+
+# Optional (only needed for Docker and CI/CD)
+Docker        >= 24.0.0     https://www.docker.com
+Jenkins       LTS           https://www.jenkins.io
+
+
+# ------------------------------------------------------------
+# NODE.JS DEPENDENCIES  (auto-installed via: npm install)
+# ------------------------------------------------------------
+
+# Web Framework
+express                 ^4.18.3    # HTTP server and routing
+
+# Template Engine
+ejs                     ^3.1.10    # HTML templates with embedded JS
+
+# Database
+better-sqlite3          ^9.4.3     # Fast SQLite driver for Node.js
+
+# Authentication
+bcryptjs                ^2.4.3     # Password hashing
+express-session         ^1.18.0    # Session management (login state)
+connect-flash           ^0.1.1     # One-time flash messages
+
+# Utilities
+dotenv                  ^16.4.5    # Load .env config file
+marked                  ^9.1.6     # Markdown to HTML renderer
+
+
+# ------------------------------------------------------------
+# DEV DEPENDENCIES  (only used during development)
+# ------------------------------------------------------------
+
+nodemon                 ^3.1.0     # Auto-restart server on file changes
+
+
+# ------------------------------------------------------------
+# HOW TO INSTALL ALL DEPENDENCIES
+# ------------------------------------------------------------
+#
+#   npm install
+#
+# This reads package.json and installs everything above
+# into the node_modules/ folder automatically.
+# ------------------------------------------------------------
