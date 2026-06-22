@@ -267,4 +267,4 @@ data/             # SQLite database (runtime data)
 
 ## License
 
-This project is for educational and DevOps learning purposes.
+This project is for educational purpose and DevOps learning purposes.
