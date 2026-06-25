@@ -3,7 +3,7 @@
 # ─────────────────────────────────────────────────────────────────
 #
 # Build:   docker build -t tech-blog .
-# Run:     docker run -p 3000:3000 --env-file .env tech-blog
+# Run:     docker run -p 30001:30001 --env-file .env tech-blog
 # ─────────────────────────────────────────────────────────────────
 
 # STEP 1 — Use official Node.js LTS image (Alpine = tiny size ~50MB)
@@ -27,7 +27,7 @@ COPY . .
 RUN mkdir -p /app/data
 
 # STEP 7 — Tell Docker which port the app uses
-EXPOSE 3000
+EXPOSE 30001
 
 # STEP 8 — Set Node environment to production
 ENV NODE_ENV=production
