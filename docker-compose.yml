@@ -1,0 +1,7 @@
+services:
+  tech-blog:
+    image: tech-blog-app:latest
+    container_name: tech-blog-container
+    ports:
+      - "30001:3000"
+    restart: unless-stopped
