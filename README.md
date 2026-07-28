@@ -1,5 +1,5 @@
 # TechBlog — Technical Blogging Platform
-
+This for educational purpose
 A full-stack technical blog application built with **Node.js**, **Express**, and **SQLite**.  
 Supports two roles (Admin & Reader), Markdown posts, Docker containerization, and a Jenkins CI/CD pipeline.
 
