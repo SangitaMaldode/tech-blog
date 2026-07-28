@@ -268,3 +268,7 @@ data/             # SQLite database (runtime data)
 ## License
 
 This project is for educational purpose and DevOps learning purposes.
+
+<img width="1122" height="560" alt="image" src="https://github.com/user-attachments/assets/cf295ca9-aba8-4075-859e-6c7b79fc4b90" />
+
+
